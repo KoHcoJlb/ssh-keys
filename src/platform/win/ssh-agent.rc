@@ -1,0 +1,27 @@
+#include <windows.h>
+
+1 RT_MANIFEST "ssh-agent.manifest"
+2 ICON "icon.ico"
+
+101 DIALOGEX 0, 0, 180, 80
+CAPTION "Confirm key operation"
+STYLE DS_CENTER
+FONT 9, "Arial"
+{
+  PUSHBUTTON    "Yes", IDOK,         63,  60, 51,  14
+  DEFPUSHBUTTON "No",  IDCANCEL,     121, 60, 51,  14
+  CTEXT         "",                  4,   10, 6, 100, 10
+  CTEXT         "wants to use key",  5,   10, 16, 160, 10
+  CTEXT         "",                  6,   10, 26, 160, 10
+  CTEXT         "via channel",       7,   10, 36, 160, 10
+  CTEXT         "",                  8,   10, 46, 160, 10
+}
+
+201 MENUEX
+{
+  POPUP "popup" {
+      MENUITEM "Reload", 2
+      MENUITEM MFT_SEPARATOR
+      MENUITEM "Exit", 1
+  }
+}

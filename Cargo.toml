@@ -1,0 +1,36 @@
+[package]
+name = "ssh-keys"
+version = "0.1.0"
+authors = ["Igor Stuzhuk (KoHcoJlb) <fujitsuigor@gmail.com>"]
+edition = "2018"
+
+build = "build.rs"
+
+[dependencies]
+wrapperrs = "0.1.0"
+byteorder = "1.3.4"
+data-encoding = "2.2.0"
+openssl = { version = "0.10.29", features = ["vendored"] }
+serde = { version = "1.0.106", features = ["derive"] }
+toml = "0.5.6"
+lazy_static = "1.4.0"
+ssh2 = "0.8.0"
+clap = "2.33.0"
+rpassword = "4.0.5"
+ntapi = "0.3.4"
+itertools = "0.9.0"
+log = "0.4.11"
+simplelog = "0.8.0"
+
+[target.'cfg(windows)'.dependencies]
+uds_windows = "0.1.4"
+
+[target.'cfg(windows)'.dependencies.winapi]
+version = "0.3.9"
+features = ["libloaderapi", "errhandlingapi", "winbase", "winnt", "winuser", "windef", "minwindef", "memoryapi",
+    "handleapi", "namedpipeapi", "fileapi", "winerror", "processthreadsapi", "knownfolders", "shlobj",
+    "stringapiset", "winnls", "combaseapi", "shellapi", "synchapi", "std", "wincon", "ntdef", "wingdi", "psapi",
+    "commctrl", "winver"]
+
+[target.'cfg(windows)'.build-dependencies]
+embed-resource = "1.3.3"
