@@ -1,7 +1,8 @@
-use std::fs::{create_dir_all, File};
+use std::fs::{create_dir_all, OpenOptions};
 
 use clap::{App, Arg};
 use log::error;
+use log::info;
 use log::LevelFilter;
 use simplelog::{CombinedLogger, ConfigBuilder, SimpleLogger, WriteLogger};
 use wrapperrs::{Result, ResultExt};
@@ -33,7 +34,8 @@ fn main() {
             .set_location_level(LevelFilter::Error)
             .build();
         create_dir_all(config_dir()).expect("create config dir");
-        let log_file = File::create(config_dir().join("trace.log")).expect("create log file");
+        let log_file = OpenOptions::new().write(true).append(true).create(true)
+            .open(config_dir().join("trace.log")).expect("create log file");
         CombinedLogger::init(vec![
             SimpleLogger::new(LevelFilter::Trace, logger_config.clone()),
             WriteLogger::new(LevelFilter::Trace, logger_config, log_file)
@@ -55,7 +57,10 @@ fn main() {
 
         match opts.subcommand() {
             ("copy-id", opts) => copy_id(&agent, opts.unwrap()),
-            _ => platform::serve(agent),
+            _ => {
+                info!("Started");
+                platform::serve(agent)
+            }
         }?;
 
         Ok(()) as Result<()>

@@ -144,8 +144,12 @@ pub unsafe fn get_executable_description(exe: &Path) -> Result<String, ()> {
     if VerQueryValueW(data.as_ptr() as _, query.as_str().to_utf16_null().as_ptr(),
                       &mut *(&mut data_ptr as *mut _ as *mut *mut _),
                       &mut size as _) == 0 {
-        error!("VerQueryValueW (file description), err={}, exe={}, query={}", GetLastError(),
-               exe.to_str().unwrap(), query);
+        let err = GetLastError();
+        // 1813 - FileDescription resource type not found
+        if err != 1813 {
+            error!("VerQueryValueW (file description), err={}, exe={}, query={}", err,
+                   exe.to_str().unwrap(), query);
+        }
         return Err(());
     };
 
